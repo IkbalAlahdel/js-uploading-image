@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<style type="text/css">
+
+#preview-container {
+    margin: 50px auto;
+    padding: 40px;
+    border: 1px solid #cccccc;
+    border-radius: 2px;
+}
+
+#upload-dialog {
+    padding: 5px;
+    border: 1px solid #336699;
+    background-color: white;
+    color: #336699;
+    background: none;
+    font-size: inherit;
+    font-family: inherit;
+    outline: none;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 2px;
+    margin: 20% 20% 20% 45%;
+
+}
+
+#image-file {
+    display: none;
+}
+
+#preview-image {
+    display: none;
+    vertical-align: middle;
+    border: 1px solid rgba(0,0,0,0.01);
+    width: 350px;
+    height: 350px;
+    opacity: 50%;
+border-radius: 10px;
+
+}
+#preview-image:hover{
+    box-shadow: 5px 5px #423144;
+                background-clip: padding-box;
+                transition: all 5000ms;
+                border-radius: 50%;
+                width: 480px;
+    height: 480px;
+    opacity: 95%;
+}
+
+#image-name {
+    display: none;
+    vertical-align: middle;
+    color: #336699;
+    margin: 0 15px;
+
+}
+
+#upload-button, #cancel-image {
+    padding: 5px;
+    border: 1px solid #336699;
+    background-color: #336699;
+    color: white;
+    font-size: inherit;
+    font-family: inherit;
+    outline: none;
+    display: none;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+body{
+            background: linear-gradient(-45deg,#ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+           box-sizing: border-box; 
+        }
+        @keyframes gradient{
+            0%{
+                background-position: 0% 50%;
+            }
+            50%{
+                background-position: 100% 50%;
+            }
+            100%{
+                background-position: 0% 50%; 
+            }
+        }
+        .bu{
+            margin: 5px;
+        }
+</style>
+</head>
+
+<body >
+
+<div id="container">
+    <label id="upload-dialog">Choose Image</label>
+    <input type="file" id="image-file" name="image" accept="image/*" />
+    <img  id="preview-image" />
+    <div class="container bu">
+    <span id="image-name"></span>
+    <button id="upload-button">Upload</button>
+    <button id="cancel-image">Cancel</button>
+</div>
+</div>
+
+<script>
+
+var _PREVIEW_URL;
+
+/* Show Select File dialog */
+document.querySelector("#upload-dialog").addEventListener('click', function() {
+    document.querySelector("#image-file").click();
+});
+
+/* Selected File has changed */
+document.querySelector("#image-file").addEventListener('change', function() {
+    // user selected file
+    var file = this.files[0];
+
+    // hide upload dialog button
+    document.querySelector("#upload-dialog").style.display = 'none';
+    
+    // set name of the file
+    document.querySelector("#image-name").innerText = file.name;
+    document.querySelector("#image-name").style.display = 'inline-block';
+
+    // local url
+    _PREVIEW_URL = URL.createObjectURL(file);
+
+    // set src of image and show
+    document.querySelector("#preview-image").setAttribute('src', _PREVIEW_URL);
+    document.querySelector("#preview-image").style.display = 'block';
+
+    
+    // show cancel and upload buttons now
+    document.querySelector("#cancel-image").style.display = 'inline-block';
+    document.querySelector("#upload-button").style.display = 'inline-block';
+});
+
+/* Reset file input */
+document.querySelector("#cancel-image").addEventListener('click', function() {
+    // destroy previous local url
+    URL.revokeObjectURL(_PREVIEW_URL);
+
+    // show upload dialog button
+    document.querySelector("#upload-dialog").style.display = 'inline-block';
+
+    // reset to no selection
+    document.querySelector("#image-file").value = '';
+
+    // hide elements that are not required
+    document.querySelector("#image-name").style.display = 'none';
+    document.querySelector("#preview-image").style.display = 'none';
+    document.querySelector("#cancel-image").style.display = 'none';
+    document.querySelector("#upload-button").style.display = 'none';
+});
+
+/* Upload file to server */
+document.querySelector("#upload-button").addEventListener('click', function() {
+    // AJAX request to server
+    alert('This will upload file to server');
+});
+
+</script>
+
+</body>
+</html>
